@@ -25,6 +25,7 @@ YOLOv1-Paper-Replicating/
 │   ├── utils/
 │   │   └── grid_utils.py          # Grid cell coordinates and offset calculations 
 │   ├── yolo_model.py              # Backbone + detection head integration (Overall architecture)
+│   ├── mns_decode_and_visualize.py # after layer this is the key of visualize
 │   └── config.py                  # Optional configuration for training parameters
 │
 ├── images/
