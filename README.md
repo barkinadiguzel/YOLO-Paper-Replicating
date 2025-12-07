@@ -1,66 +1,75 @@
-# 👀 YOLOv1-Paper-Replicating
+# 👀 YOLOv1 – Paper Replication
 
-- This repository contains a replication of the **YOLO: You Only Look Once – Unified, Real-Time Object Detection** paper by Joseph Redmon et al. The goal is to implement the YOLOv1 model as described in the original paper, preserving the architecture and core detection logic. This version focuses on YOLOv1 and its real-time detection pipeline.
+Replication of **YOLO: You Only Look Once – Unified, Real-Time Object Detection** (Redmon et al., 2016). This project reproduces the YOLOv1 model and its real-time detection pipeline as described in the original paper.
 
-**Paper**: [YOLO: You Only Look Once (arXiv 2016)](https://arxiv.org/abs/1506.02640)
-
----
-
-## 🖼 Model Overview
-
-- YOLOv1 approaches object detection as a single unified regression problem. Instead of using separate pipelines for region proposals, feature extraction, and classification, the model divides an input image into an S × S grid. Each grid cell is responsible for predicting a fixed number of bounding boxes, along with confidence scores and class probabilities. This end-to-end training on full images allows YOLOv1 to simultaneously learn object localization and classification, making it extremely fast while maintaining reasonable accuracy.
+**Paper:** [YOLO: You Only Look Once (arXiv 2016)](https://arxiv.org/abs/1506.02640)
 
 ---
 
-## 🗂 Project Structure
+## 🖼 Overview – Model & Detection Logic
+
+YOLOv1 treats object detection as a **single regression problem**:  
+
+- The input image is divided into an **S × S grid**.  
+- Each grid cell predicts a fixed number of **bounding boxes**, **confidence scores**, and **class probabilities**.  
+- **End-to-end training** allows the model to simultaneously learn object **localization** and **classification**.  
+- This unified approach enables **real-time detection** with reasonable accuracy.
+
+![Figure Overview](images/fig1.png)
+*Figure:* YOLOv1 model architecture overview.
+
+---
+
+## 🧮 Key Idea – Prediction Mechanism
+
+- Each bounding box prediction includes **coordinates (x, y, w, h)** and a **confidence score** representing $$(Pr(object) \cdot IOU_{pred}^{truth}\)$$.  
+- Each grid cell also predicts **class probabilities** $$(P(Class_i|Object)\)$$.  
+- At inference, final score for a class in a box:
+
+$$Score = Pr(Object) \cdot IOU_{pred}^{truth} \cdot P(Class_i|Object)$$
+
+> This formulation allows YOLOv1 to **simultaneously detect multiple objects** while maintaining a simple and fast computation pipeline.
+
+---
+
+## 🖼 Figures
+
+### Figure 2 – Grid and Bounding Boxes
+![Grid Cells](images/fig2.png)
+
+### Figure 3 – Convolutional Layers
+![Convolutional Layers](images/fig3.png)
+
+### Figure 6 – Detection Results
+![Detection Examples](images/fig6.png)
+
+---
+
+## 🏗️ Project Structure
 
 ```bash
 YOLOv1-Paper-Replicating/
 │
 ├── src/
 │   ├── backbone/
-│   │   └── conv_block.py          # Conv2d + BatchNorm + LeakyReLU 
+│   │   └── conv_block.py
 │   ├── detection_head/
-│   │   └── yolo_layer.py          # B box prediction, confidence, class probabilities 
+│   │   └── yolo_layer.py
 │   ├── utils/
-│   │   └── grid_utils.py          # Grid cell coordinates and offset calculations 
-│   ├── yolo_model.py              # Backbone + detection head integration (Overall architecture)
-│   ├── mns_decode_and_visualize.py # after layer this is the key of visualize
-│   └── config.py                  # Optional configuration for training parameters
+│   │   └── grid_utils.py
+│   ├── yolo_model.py
+│   ├── mns_decode_and_visualize.py
+│   └── config.py
 │
 ├── images/
-│   ├── fig1.png                    # YOLO model architecture overview
-│   ├── fig2.png                    # Grid cell and bounding box illustration
-│   ├── fig3.png                    # Convolutional layers example
-│   └── fig6.png                    # Detection examples
+│   ├── fig1.png
+│   ├── fig2.png
+│   ├── fig3.png
+│   └── fig6.png
 │
 └── requirements.txt
 
 ```
----
-## 🖼 Figures
-
-### Figure 1 – Model Architecture
-![YOLO Model](images/fig1.png)
-
-- Shows the overall YOLOv1 architecture that extracts features and predicts bounding boxes and class probabilities in a single pass.
-
-### Figure 2 – Grid and Bounding Boxes
-![Grid Cells](images/fig2.png)
-
-- Illustrates how the image is divided into grid cells and how each cell predicts bounding boxes and class probabilities.
-
-### Figure 3 – Convolutional Layers
-![Convolutional Layers](images/fig3.png)
-
-- Visualizes some of the convolutional layers used in the backbone for feature extraction.
-
-### Figure 6 – Detection Results
-![Detection Examples](images/fig6.png)
-
-- Sample output showing predicted bounding boxes and class probabilities on test images.
-
----
 ## 🔗 Feedback
 
 For feedback or questions, contact: [barkin.adiguzel@gmail.com](mailto:barkin.adiguzel@gmail.com)
